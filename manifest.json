@@ -1,0 +1,10 @@
+{
+  "id": "move-scheduled-task",
+  "name": "Move Scheduled Task",
+  "version": "0.1.0",
+  "minAppVersion": "1.4.0",
+  "description": "Move tagged, dated tasks to their correct daily note.",
+  "author": "Jason Kang",
+  "authorUrl": "https://github.com/jasonkang",
+  "isDesktopOnly": false
+}
