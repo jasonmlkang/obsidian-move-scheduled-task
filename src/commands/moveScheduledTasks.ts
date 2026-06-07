@@ -112,13 +112,14 @@ async function removeTasksFromSources(
     const file = app.vault.getFileByPath(sourcePath);
     if (!(file instanceof TFile)) continue;
 
-    const indicesToRemove = new Set(sourceTasks.map((t) => t.lineIndex));
-
     await app.vault.process(file, (content) => {
-      return content
-        .split("\n")
-        .filter((_, i) => !indicesToRemove.has(i))
-        .join("\n");
+      const lines = content.split("\n");
+      const indicesToRemove = new Set(
+        sourceTasks
+          .filter((t) => lines[t.lineIndex] === t.lineText)
+          .map((t) => t.lineIndex)
+      );
+      return lines.filter((_, i) => !indicesToRemove.has(i)).join("\n");
     });
   }
 }
