@@ -1,4 +1,4 @@
-import { extractDate, stripDateAnnotations } from "./dateParser";
+import { extractScheduleDate, stripDateAnnotations } from "./dateParser";
 import type { TaskMatch } from "../types";
 
 const INCOMPLETE_TASK_RE = /^(\s*)-\s\[\s\]\s(.+)$/;
@@ -25,7 +25,7 @@ export function findScheduledTasks(
     if (!INCOMPLETE_TASK_RE.test(line)) continue;
     if (!line.includes(tag)) continue;
 
-    const date = extractDate(line);
+    const date = extractScheduleDate(line);
     if (!date) continue;
 
     tasks.push({

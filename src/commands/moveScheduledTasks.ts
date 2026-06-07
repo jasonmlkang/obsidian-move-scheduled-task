@@ -21,7 +21,6 @@ export async function moveScheduledTasksCommand(
     new Notice("No scheduled tasks to move.");
     return;
   }
-  console.log(allTasks)
 
   // Group tasks by target daily note path to skip self-referencing tasks
   const tasksByDate = groupByDate(allTasks, settings);
