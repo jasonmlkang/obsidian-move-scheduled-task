@@ -80,7 +80,11 @@ async function insertTasksIntoDailyNote(
 ): Promise<void> {
   await app.vault.process(file, (content) => {
     const lines = content.split("\n");
-    const insertLines = tasks.map((t) => t.lineText);
+    const insertLines: string[] = [];
+    for (const t of tasks) {
+      insertLines.push(t.lineText);
+      for (const n of t.nestedLines) insertLines.push(n.lineText);
+    }
 
     if (!settings.targetHeading) {
       return [...lines, ...insertLines].join("\n");
@@ -114,11 +118,14 @@ async function removeTasksFromSources(
 
     await app.vault.process(file, (content) => {
       const lines = content.split("\n");
-      const indicesToRemove = new Set(
-        sourceTasks
-          .filter((t) => lines[t.lineIndex] === t.lineText)
-          .map((t) => t.lineIndex)
-      );
+      const indicesToRemove = new Set<number>();
+      for (const t of sourceTasks) {
+        if (lines[t.lineIndex] !== t.lineText) continue;
+        indicesToRemove.add(t.lineIndex);
+        for (const n of t.nestedLines) {
+          if (lines[n.lineIndex] === n.lineText) indicesToRemove.add(n.lineIndex);
+        }
+      }
       return lines.filter((_, i) => !indicesToRemove.has(i)).join("\n");
     });
   }

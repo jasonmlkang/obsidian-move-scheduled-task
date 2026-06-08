@@ -10,6 +10,7 @@ export interface PluginSettings {
 export interface TaskMatch {
   lineIndex: number;
   lineText: string;
+  nestedLines: { lineIndex: number; lineText: string }[];
   date: string;
   sourcePath: string;
 }
